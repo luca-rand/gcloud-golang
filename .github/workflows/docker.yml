@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+  build:
+    name: build & deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag docker.pkg.github.com/luca-rand/gcloud-golang-docker/image:$GITHUB_SHA
+      - name: Sign in to the github docker registry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: docker login docker.pkg.github.com --username lucacasonato -p ${GITHUB_TOKEN}
+      - name: Push the Docker image
+        run: docker push docker.pkg.github.com/luca-rand/gcloud-golang-docker/image:$GITHUB_SHA
