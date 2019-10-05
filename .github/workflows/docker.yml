@@ -12,7 +12,7 @@ jobs:
         run: docker build . --file Dockerfile --tag docker.pkg.github.com/luca-rand/gcloud-golang-docker/image:$GITHUB_SHA
       - name: Sign in to the github docker registry
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker login docker.pkg.github.com --username lucacasonato -p ${GITHUB_TOKEN}
+          DOCKER_PUSH_TOKEN: ${{ secrets.DOCKER_PUSH_TOKEN }}
+        run: docker login docker.pkg.github.com --username lucacasonato -p ${DOCKER_PUSH_TOKEN}
       - name: Push the Docker image
         run: docker push docker.pkg.github.com/luca-rand/gcloud-golang-docker/image:$GITHUB_SHA
